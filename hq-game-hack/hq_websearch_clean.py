@@ -35,24 +35,33 @@ def get_key(row):
     return row[1]
 
 # In[]
-# Grab the newest screenshot from disk
+# Grab the newest screenshot from disk located in this directory
 screenshot_dir = '/Users/pshih/Desktop/'
 
-# Get the filenames of screenshots and also the modified date
-# Assume that the newest one has the most recent modified date...
+# Combine the filenames of screenshots in dir and the modified date into a list
 screenshots = [[filename, os.path.getmtime(screenshot_dir+filename)] for filename in os.listdir(screenshot_dir) if 'Screen Shot' in filename]
+
+# Assume that the newest one has the most recent modified date...
+# Sort descending by the 2nd column which contains modified date using get_key() defined above
 screenshots_sorted = sorted(screenshots, key=get_key, reverse=True)
+# Save full path to image in a variable
 imagefile = screenshot_dir + screenshots_sorted[0][0]
 
 # In[]
-# Get the question from the screenshot
+# Load the image file
 img = Image.open(imagefile)
+
+# First crop the image to exclude the OS bar at the top and chat box at the bottom
 img = img.crop((0, int(img.height*0.18), img.width, int(img.height*0.7)))
+
+# Apply OCR on the screenshot to get the text
 hqtext = pytesseract.image_to_string(img)
 
+# Clean the text of new lines \n and then split questions and answers into
+# separate elements in an array
 hqtext_split = clean_text(hqtext)
 
-# Get the question text and 3 answers
+# Get the question text and 3 answers text
 for i, text in enumerate(hqtext_split):
     if '?' in text:
         startIdx = i
@@ -83,6 +92,7 @@ except TimeoutException:
 search_title_elements = browser.find_elements_by_css_selector('div[data-hveid]>div.rc>h3.r>a')
 search_summaries_elements = browser.find_elements_by_css_selector('div[data-hveid]>div.rc>div.s>div>span.st')
 search_similar_elements = browser.find_elements_by_css_selector('div.card-section a')
+
 search_results = list()
 
 # Append the title string with the summary string for one long paragraph
@@ -93,12 +103,12 @@ for title, summary in zip(search_title_elements, search_summaries_elements):
 for sim in search_similar_elements:
     search_results.append(sim.text)
 
-
+# Create a 2D array to store instance count of each answer in returned search
 results = np.zeros([len(search_results), len(hq_answers)])
-    
+
 for i, result in enumerate(search_results):
     for j, answer in enumerate(hq_answers):
-        # Pick the longest word in the answer 
+        # First, pick the longest word in the answer to use for substring match
         # (relevant for multi-word answers)
         ans_split = re.split(' ',answer)
         wordLength = [len(w) for w in ans_split]
@@ -112,7 +122,7 @@ for i, result in enumerate(search_results):
         else:
             ans = ans_split[longestWord_idx]
         
-        # Find an instance of the answer in each returned search result
+        # Find any instance of the answer in each returned search result
         # (case insensitive)
         results[i][j] = any(re.findall(r'(?i)\b'+ans, result))
         
@@ -120,8 +130,11 @@ for i, result in enumerate(search_results):
         if 'Wikipedia' in result:
             results[i][j] *= 2 
 
-# Down-weigh search result instances that contain more than one answer option
+# Down-weigh search result instances that contain more than one answer option...
+# This is bc there can only be one correct answer!
 R = results/(results>0).sum(axis=1)[:,None]
+
+# Replace NaN elements with 0
 R[np.isnan(R)] = 0
 
 if R.sum() == 0:
