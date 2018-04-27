@@ -6,6 +6,6 @@ The script (1) reads in the newest screenshot from disk, (2) applies OCR on the 
 * _hq\_websearch\_practice.py_ - the script that I had used for trying various methods... sporadically commented throughout
 * _hq\_websearch\_clean.py_ - the cleaned up script with extra stuff from \_practice removed... commented more thoroughly
 
-As of April 25, 2018, it still works well after question 2/3, giving the correct answer approximately 70-80% of the time. The first 2-3 questions are usually easy with an obvious answer and, I suspect, are specifically formulated to weed out bots playing the game... 
+As of April 25, 2018, it still works well after question 2/3, giving the correct answer approximately 80% of the time. The first 2-3 questions are usually easy with an obvious answer and, I suspect, are specifically formulated to weed out bots playing the game... 
 
 I recently realized that other people have already tried something similar to what I have here and some were actually using these automated methods to cheat. **I have never used this code to cheat the game and would advise anyone against doing so.** I wrote it as a proof-of-concept, and it was an opportunity to play around with Selenium. I should also note that using automated means to scrape from Google's website was once against TOS. It might still be, but from a quick skim, I couldn't find its mention in their 2017 terms.
