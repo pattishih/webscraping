@@ -1,4 +1,6 @@
-## hq-game-hack
+## HQ Game Python Automation Experiment
+*See blog post [here](https://pattishih.com/project-a-nostalgic-look-back-at-hq-trivia-and-my-get-rich-quick-python-automation-experiment/).*
+
 This was a proof-of-concept python script that I worked on a little while ago to see if we can use the power of Google search for HQ trivia. All one would need to do is mirror the device onto the desktop and take screenshots or take screenshots from the device's end but have the file save directly onto the computer (doable from Xcode app).
 
 The script (1) reads in the newest screenshot from disk, (2) applies OCR on the text with tesseract, (3) runs a google search using Selenium, and (4) parses the results to return the most likely answer. Details about how I ran the search and how the results were treated for selecting an answer are provided as comments within hq\_websearch\_clean.py
