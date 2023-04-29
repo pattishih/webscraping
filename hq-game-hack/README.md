@@ -1,5 +1,5 @@
 ## HQ Game Python Automation Experiment
-*See blog post [here](https://pattishih.com/project-a-nostalgic-look-back-at-hq-trivia-and-my-get-rich-quick-python-automation-experiment/).*
+*See blog post [here](https://pattishih.com/project-a-nostalgic-look-back-at-hq-trivia-and-my-get-rich-python-automation-experiment/).*
 
 This was a proof-of-concept python script that I worked on a little while ago to see if we can use the power of Google search for HQ trivia. All one would need to do is mirror the device onto the desktop and take screenshots or take screenshots from the device's end but have the file save directly onto the computer (doable from Xcode app).
 
